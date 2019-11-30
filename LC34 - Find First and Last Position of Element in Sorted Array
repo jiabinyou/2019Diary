@@ -1,0 +1,47 @@
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1};
+        //sanity check
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        findFirst(nums, target, res);
+        findLast(nums, target, res);
+        return res;
+    }
+    
+    private void findFirst(int[] nums, int target, int[] res) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            } 
+        }
+        if (nums[left] == target) {
+            res[0] = left;
+        }
+    }
+    
+    private void findLast(int[] nums, int target, int[] res) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right - 1) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] <= target) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        if (nums[right] == target) {
+            res[1] = right;
+        } else if (nums[left] == target) {
+            res[1] = left;
+        }
+    }
+}
