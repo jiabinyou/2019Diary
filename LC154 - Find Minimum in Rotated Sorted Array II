@@ -1,0 +1,27 @@
+/*
+input: sorted
+结果一定存在
+
+nums[mid]与nums[right]进行比较
+nums[mid] == nums[right] --> dedup, right--
+nums[mid] < nums[right] --> 往左，mid可能是结果
+		else                                  -->往右，mid不可能是结果
+*/
+
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == nums[right]) {
+                right--;
+            } else if (nums[mid] < nums[right]) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return nums[left];
+    }
+}
