@@ -1,0 +1,44 @@
+/*
+易错点：
+pos中a的判断和下面必须要一致，即：
+如果a=0，pos从nums.length - 1开始（即a=0和a>0一起处理），那么下面填值a=0也必须和a>0在一起处理
+*/
+
+class Solution {
+    public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
+        //sanity check
+        if (nums == null || nums.length == 0) {
+            return new int[0];
+        }
+        int i = 0;
+        int j = nums.length - 1;
+        int[] res = new int[nums.length];
+        int pos = a >= 0 ? nums.length - 1 : 0;
+        while (i <= j) {
+            int iVal = calFunc(nums, a, b, c, i);
+            int jVal = calFunc(nums, a, b, c, j);
+            if (a >= 0) {
+                if (iVal < jVal) {
+                    res[pos--] = jVal;
+                    j--;
+                } else {
+                    res[pos--] = iVal;
+                    i++;
+                }
+            } else {
+                if (iVal < jVal) {
+                    res[pos++] = iVal;
+                    i++;
+                } else {
+                    res[pos++] = jVal;
+                    j--;
+                }
+            }
+        }
+        return res;
+    }
+    
+    private int calFunc(int[] nums, int a, int b, int c, int idx) {
+        return a * nums[idx] * nums[idx] + b * nums[idx] + c;
+    }
+}
