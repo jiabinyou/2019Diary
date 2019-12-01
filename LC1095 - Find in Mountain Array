@@ -1,0 +1,54 @@
+/*
+Mountain Array: 并且一定是先上升，后下降的array
+peak是一个单独的元素，左半边递增无dup，右半边递减无dup
+*/
+
+class Solution {
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        //找到转折点，先看是不是target
+        int n = mountainArr.length();
+        int l = 0;
+        int r = n - 1;
+        while(l < r){
+            int m = l + (r - l) / 2;
+            if(mountainArr.get(m) < mountainArr.get(m + 1)){
+                l = m + 1;
+            }else{
+                r = m;
+            }
+        }
+        if(mountainArr.get(l) == target){
+            return l;
+        }
+        
+        //找左半边递增区域，有target就返回
+        int left = 0;
+        int right = l - 1;
+        while(left <= right) {
+            int mid = (left + right) / 2;
+            if(mountainArr.get(mid) == target){
+                return mid;
+            } else if (mountainArr.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        //找右半边递减区域，有target就返回
+        left = l + 1; 
+        right = n - 1;
+        while(left <= right){
+            int mid = (left + right) / 2;
+            if(mountainArr.get(mid) == target){
+                return mid;
+            }else if(mountainArr.get(mid) > target){
+                left = mid + 1;
+            }else{
+                right = mid - 1;
+            }
+        }
+        return -1; 
+    }
+}
+
