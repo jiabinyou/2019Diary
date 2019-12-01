@@ -1,0 +1,39 @@
+/*
+input: sorted
+结果一定存在
+
+规律:
+看每次mid所在的index是奇数还是偶数
+mid % 2 != 0 
+		--mid应该是一个pair中的第二个位置
+				if (nums[mid] != nums[mid] + 1) ---> 说明左边都是对的没出错，go right，mid不是答案
+				else    -->说明左边出错了，go left, mid可能是答案
+mid % 2 == 0 
+		--mid应该是一个pair中的第一个位置
+			if (nums[mid] == nums[mid] + 1) ---> 说明左边都是对的没出错，go right，mid不是答案
+			else    -->说明左边出错了，go left,   mid可能是答案
+*/
+
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (mid  % 2 != 0) {
+                if (nums[mid] != nums[mid + 1]) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            } else {
+                if (nums[mid] == nums[mid + 1]) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+        }
+        return nums[left];
+    }
+}
