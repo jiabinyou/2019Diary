@@ -1,0 +1,26 @@
+/*
+(线性扫描) O(nlogn)
+目标：
+我们要在数组中找一个最大的 h，使得(有 h 个数)大于等于 h。
+
+我们可以先将原数组从小到大排序，然后从大到小枚举 h，直到数组中
+   （后 h 个数）>=  h 为止。
+
+从后往前，数的个数：h （从0开始，最多到len）
+对应所走到的index：len - h - 1
+   
+*/
+class Solution {
+    public int hIndex(int[] citations) {
+        //sanity check
+        if (citations == null || citations.length == 0) {
+            return 0;
+        }
+        Arrays.sort(citations);
+        int h = 0;
+        while (h < citations.length && h < citations[citations.length - h - 1]) {
+            h++;
+        }
+        return h;
+    }
+}
