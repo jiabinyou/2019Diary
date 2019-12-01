@@ -8,7 +8,6 @@
 
 从后往前，数的个数：h （从0开始，最多到len）
 对应所走到的index：len - h - 1
-   
 */
 class Solution {
     public int hIndex(int[] citations) {
