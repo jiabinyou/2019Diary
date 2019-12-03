@@ -1,3 +1,7 @@
+Sol1 : max + min heap
+TC: O((m + n)log(m + n))
+SC: O(m + n)
+
 class Solution {
     PriorityQueue<Integer> max = new PriorityQueue<>(11, Collections.reverseOrder());
     PriorityQueue<Integer> min = new PriorityQueue<>();
@@ -39,6 +43,38 @@ class Solution {
             return (double) (max.peek() / 2.0 + min.peek() / 2.0);
         } else {
             return (double) max.peek();
+        }
+    }
+}
+
+Sol2 : binary search (recursion写法）
+TC:O(log(m + n))
+SC: O(m + n)
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int m = nums1.length;
+        int n = nums2.length;
+        int oneK = (m + n + 1) / 2;     //第一个kth
+        int twoK = (m + n + 2) / 2;    //第二个kth
+        return (findKth(nums1, nums2, 0, 0, oneK) + findKth(nums1, nums2, 0, 0, twoK)) / 2.0;
+    }
+    
+    //recursion (binary search) to find kth
+    //l1,l2:start index of bs in nums1 & nums2 in cur recursion layer
+    //rk: remainK in cur recursion layer
+    private int findKth(int[] nums1, int[] nums2, int l1, int l2, int rK) { 
+        int newl1 = l1 + rK / 2 - 1;
+        int newl2 = l2 + rK / 2 - 1;
+        //base case
+        if (l1 >= nums1.length) return nums2[l2 + rK - 1];
+        if (l2 >= nums2.length) return nums1[l1 + rK - 1];
+        if (rK == 1) return Math.min(nums1[l1], nums2[l2]);
+        int midVal1 = newl1 < nums1.length ? nums1[newl1] : Integer.MAX_VALUE;
+        int midVal2 = newl2 < nums2.length ? nums2[newl2] : Integer.MAX_VALUE;
+        if (midVal1 < midVal2) {
+            return findKth(nums1, nums2, newl1 + 1, l2, rK - rK / 2);
+        } else {
+            return findKth(nums1, nums2, l1, newl2 + 1, rK - rK / 2);
         }
     }
 }
