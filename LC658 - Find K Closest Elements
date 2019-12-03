@@ -1,0 +1,45 @@
+
+//binary search + 中心开花
+class Solution {
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        List<Integer> res = new ArrayList<>();
+        //sanity check
+        if (arr == null || arr.length == 0) {
+            return res;
+        }
+        int i = largestSmallerOrEqual(arr, x);
+        int j = i + 1;
+        while (res.size() < k) {
+            if (j >= arr.length || i >= 0 && x - arr[i] <= arr[j] - x) {
+                res.add(arr[i]);
+                i--;
+            } else {
+                res.add(arr[j]);
+                j++;
+            }
+        }
+        Collections.sort(res);
+        return res;
+    }
+    
+    private int largestSmallerOrEqual(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        while (left < right - 1) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        if (arr[right] <= target) {
+            return right;
+        } else if (arr[left] <= target) {
+            return left;
+        }
+        return -1;
+    }
+}
